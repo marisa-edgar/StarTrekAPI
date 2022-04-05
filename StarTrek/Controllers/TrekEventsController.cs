@@ -22,7 +22,7 @@ namespace StarTrek.Controllers
 
     // GET: api/Events
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<TrekEvent>>> Get(string description, string category, int date, Character character)
+    public async Task<ActionResult<IEnumerable<TrekEvent>>> Get(string description, int date)
     {
       var query = _db.TrekEvents.AsQueryable();
 
@@ -30,17 +30,9 @@ namespace StarTrek.Controllers
       {
         query = query.Where(entry => entry.Description == description);
       }
-      if (category != null)
-      {
-        query = query.Where(entry => entry.Category == category );
-      }
-      if (date > 0)
+      if (date != 0)
       {
         query = query.Where(entry => entry.Date >= date);
-      }
-      if (character != null)
-      {
-        query = query.Where(entry => entry.Characters == character);
       }
 
       return await query.ToListAsync();
